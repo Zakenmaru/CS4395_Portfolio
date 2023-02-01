@@ -6,6 +6,7 @@ CS 4395 - Professor Mazidi
 """
 import os.path
 import sys
+from collections import defaultdict
 
 
 class Person:
@@ -16,6 +17,7 @@ class Person:
         self.id = id
         self.phone = phone
 
+    # prints the employee id, then their name, and finally their phone #
     def display(self):
         print("Employee id:", self.id)
         print("\t\t", self.first, self.mi, self.last)
@@ -37,8 +39,27 @@ def check_args():
         return fp
 
 
+def process(filename):
+    personnel = defaultdict()
+    with open(filename) as f:
+        # skip the first row.
+        next(f)
+        for line in f:
+            # unpack each line.
+            fields = line.split(',')
+            # extract last name, firstname , and middle initial respectively.
+            last, first, middle = fields[0], fields[1], fields[2]
+            last = last.capitalize()
+            first = first.capitalize()
+            if not middle:
+                middle = "X"
+            middle = middle.capitalize()
+
+
+
 def run_program():
     filename = check_args()
+    process(filename)
 
 
 if __name__ == '__main__':
