@@ -39,6 +39,32 @@ def check_args():
         return fp
 
 
+def process_id(id, personnel):
+    # if id is valid, then just return it; if the first 2 characters are alphabet, the last 4 are numbers,
+    # and it isn't already in the dictionary then it's a valid id.
+    if id[:2].isalpha() and id[2:].isdigit() and len(id) == 6 and not personnel.get(id):
+        return id
+    # otherwise, keep looping until a valid id is provided.
+    while True:
+        print("ID invalid: ", id)
+        print("ID is two letters followed by 4 digits")
+        id = input("Please enter a valid id: ")
+        if id[:2].isalpha() and id[2:].isdigit() and len(id) == 6 and not personnel.get(id):
+            break
+    return id
+
+
+def process_name(fields):
+    last, first, middle = fields[0], fields[1], fields[2]
+    # convert all 3 to Capital Case.
+    last = last.capitalize()
+    first = first.capitalize()
+    if not middle:
+        middle = "X"
+    middle = middle.capitalize()
+    return last, first, middle
+
+
 def process(filename):
     personnel = defaultdict()
     with open(filename) as f:
@@ -48,13 +74,8 @@ def process(filename):
             # unpack each line.
             fields = line.split(',')
             # extract last name, firstname , and middle initial respectively.
-            last, first, middle = fields[0], fields[1], fields[2]
-            last = last.capitalize()
-            first = first.capitalize()
-            if not middle:
-                middle = "X"
-            middle = middle.capitalize()
-
+            last, first, middle = process_name(line[:3])
+            id = process_id(line[3], personnel)
 
 
 def run_program():
