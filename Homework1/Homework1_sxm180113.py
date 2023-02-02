@@ -7,6 +7,7 @@ CS 4395 - Professor Mazidi
 import os.path
 import sys
 import re
+import pickle
 
 
 class Person:
@@ -90,9 +91,19 @@ def process(filename):
     return personnel
 
 
+def pickle_file(personnel):
+    # pickle the dict
+    pickle.dump(personnel, open('personnel.p', 'wb'))
+    # unpickle
+    personnel_pickle = pickle.load(open('personnel.p', 'rb'))
+    for personnel in personnel_pickle:
+        personnel_pickle[personnel].display()
+
+
 def run_program():
     filename = check_args()
     personnel = process(filename)
+    pickle_file(personnel)
 
 
 if __name__ == '__main__':
