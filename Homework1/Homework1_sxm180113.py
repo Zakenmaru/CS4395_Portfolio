@@ -25,21 +25,6 @@ class Person:
         print("\t\t", self.phone)
 
 
-def check_args():
-    # check if number of args is valid.
-    if len(sys.argv) < 2:
-        print('ERROR: Please enter a filename as a system arg! Format: \'python Homework1_sxm180113.py '
-              '<filename>\'')
-        sys.exit(1)
-    else:
-        fp = sys.argv[1]
-        # check if the filename is valid or exists.
-        if not os.path.isfile(fp):
-            print('ERROR: Specified file not found. Please specify a proper filename!')
-            sys.exit(1)
-        return fp
-
-
 def process_id(id, personnel):
     # if id is valid, then just return it; if the first 2 characters are alphabet, the last 4 are numbers,
     # and it isn't already in the dictionary then it's a valid id.
@@ -65,11 +50,27 @@ def process_name(fields):
 
 def process_phone(number):
     pattern_phone = r"\w{3}-\w{3}-\w{4}"
+    # loop until a valid phone number is given.
     while not re.search(pattern_phone, number):
         print("Phone ", number, " is invalid")
         print("Enter phone number in form 123-456-7890")
         number = input("Enter phone number: ")
     return number
+
+
+def check_args():
+    # check if number of args is valid.
+    if len(sys.argv) < 2:
+        print('ERROR: Please enter a filename as a system arg! Format: \'python Homework1_sxm180113.py '
+              '<filename>\'')
+        sys.exit(1)
+    else:
+        fp = sys.argv[1]
+        # check if the filename is valid or exists.
+        if not os.path.isfile(fp):
+            print('ERROR: Specified file not found. Please specify a proper filename!')
+            sys.exit(1)
+        return fp
 
 
 def process(filename):
@@ -101,8 +102,11 @@ def pickle_file(personnel):
 
 
 def run_program():
+    # check if cmd line args are valid
     filename = check_args()
+    # process the filename
     personnel = process(filename)
+    # pickle the dictionary
     pickle_file(personnel)
 
 
