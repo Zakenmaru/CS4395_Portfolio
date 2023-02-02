@@ -6,7 +6,7 @@ CS 4395 - Professor Mazidi
 """
 import os.path
 import sys
-from collections import defaultdict
+import re
 
 
 class Person:
@@ -42,15 +42,12 @@ def check_args():
 def process_id(id, personnel):
     # if id is valid, then just return it; if the first 2 characters are alphabet, the last 4 are numbers,
     # and it isn't already in the dictionary then it's a valid id.
-    if id[:2].isalpha() and id[2:].isdigit() and len(id) == 6 and not personnel.get(id):
-        return id
-    # otherwise, keep looping until a valid id is provided.
-    while True:
+    pattern_id = r"^[A-Za-z]{2}\d{4}$"
+    # if the id isn't valid, keep looping until a valid id is provided.
+    while not (re.match(pattern_id, id) and not personnel.get(id)):
         print("ID invalid: ", id)
         print("ID is two letters followed by 4 digits")
         id = input("Please enter a valid id: ")
-        if id[:2].isalpha() and id[2:].isdigit() and len(id) == 6 and not personnel.get(id):
-            break
     return id
 
 
@@ -65,8 +62,17 @@ def process_name(fields):
     return last, first, middle
 
 
+def process_phone(number):
+    pattern_phone = r"\w{3}-\w{3}-\w{4}"
+    while not re.search(pattern_phone, number):
+        print("Phone ", number, " is invalid")
+        print("Enter phone number in form 123-456-7890")
+        number = input("Enter phone number: ")
+    return number
+
+
 def process(filename):
-    personnel = defaultdict()
+    personnel = dict()
     with open(filename) as f:
         # skip the first row.
         next(f)
@@ -74,13 +80,19 @@ def process(filename):
             # unpack each line.
             fields = line.split(',')
             # extract last name, firstname , and middle initial respectively.
-            last, first, middle = process_name(line[:3])
-            id = process_id(line[3], personnel)
+            last, first, middle = process_name(fields[:3])
+            # extract id and fix if necessary.
+            id = process_id(fields[3], personnel)
+            # extract phone and fix if necessary.
+            phone = process_phone(fields[4])
+            # add new Person object to personnel.
+            personnel[id] = Person(last, first, middle, id, phone)
+    return personnel
 
 
 def run_program():
     filename = check_args()
-    process(filename)
+    personnel = process(filename)
 
 
 if __name__ == '__main__':
