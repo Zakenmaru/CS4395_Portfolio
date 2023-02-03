@@ -5,7 +5,7 @@ This portfolio was created for my CS 4395 class - Human Language Technologies.
 A paper I wrote on NLP. Check it out [here](Overview_of_NLP.pdf)!
 
 ## Component 1 - Processing Data
-Program: [https://github.com/Zakenmaru/CS4395_Portfolio/blob/main/Homework1/process.py](Code)
+Program: [Code](Homework1/process.py)
 ### What it does
 This program, given an input file of personnel, will process the given data and then print out each Person. Each Person has the following fields: **:last, first, mi, id, and phone**. This program will first check if the user-provided input is valid, then process the text itself so it can return a `Dictionary` full of `Person` objects, and finally pickle the appropriate input before outputting each `Person`.
 ### How to Run
