@@ -1,5 +1,19 @@
 import sys
 import os
+import nltk
+nltk.download('punkt')
+
+
+def calculate_diversity(filename):
+    # open file, begin reading line by line's word contents
+    words = []
+    with open(filename, 'r') as f:
+        for line in f:
+            lst = nltk.word_tokenize(line)
+            words.extend(lst)
+    lex_diversity = len(set(words))/len(words)
+    lex_diversity = round(lex_diversity, 2)
+    return lex_diversity
 
 
 def check_args():
@@ -19,6 +33,9 @@ def check_args():
 def run_program():
     # check if cmd line args are valid
     filename = check_args()
+    # calculate lexical diversity of the text
+    lex_diversity = calculate_diversity(filename)
+
 
 
 if __name__ == '__main__':
