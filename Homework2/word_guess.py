@@ -1,14 +1,30 @@
 import sys
 import os
 import nltk
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from collections import Counter
+
 
 nltk.download('punkt')
 nltk.download("stopwords")
 nltk.download("wordnet")
 nltk.download('averaged_perceptron_tagger')
 
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
+
+def get_words(tokens, nouns):
+    # make a frequency counter, then populate the count of nouns
+    counter_t = Counter(tokens)
+    counter_n = dict()
+    for noun in nouns:
+        counter_n[noun] = counter_t[noun]
+    # sort the nouns based on their frequency
+    sorted_nouns = sorted(counter_n.items(), key=lambda x: x[1], reverse=True)
+    # retrieve the top 50 frequent nouns and return them; strip the frequency
+    top_50 = sorted_nouns[:50]
+    top_50 = [noun for noun, freq in top_50]
+    return top_50
+
 
 def preprocess(filename):
     stop_words = set(stopwords.words("english"))
@@ -50,7 +66,7 @@ def calculate_diversity(filename):
             words.extend(lst)
     lex_diversity = len(set(words)) / len(words)
     lex_diversity = round(lex_diversity, 2)
-    return lex_diversity
+    print("Lexical Diversity: ", lex_diversity)
 
 
 def check_args():
@@ -72,8 +88,11 @@ def run_program():
     # check if cmd line args are valid
     filename = check_args()
     # calculate lexical diversity of the text
-    lex_diversity = calculate_diversity(filename)
+    calculate_diversity(filename)
+    # get tokens and nouns
     tokens, nouns = preprocess(filename)
+    # get most common words
+    guessing_words = get_words(tokens, nouns)
 
 
 if __name__ == '__main__':
