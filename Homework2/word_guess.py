@@ -31,14 +31,14 @@ def preprocess(filename):
     print(tagged[:20])
 
     # get a list of lemmas that are nouns
-    nouns = [noun for noun, tag in unique_lemmas if tag.startswith('N')]
+    nouns = [noun for noun, tag in tagged if tag.startswith('N')]
 
     # print number of tokens, number of nouns
     print("Tokens: ", len(tokens))
     print("Nouns: ", len(nouns))
 
-    # TODO: Return tokens and nouns
-    return [], []
+    # Return tokens and nouns
+    return tokens, nouns
 
 
 def calculate_diversity(filename):
