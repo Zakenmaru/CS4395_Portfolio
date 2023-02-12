@@ -16,3 +16,10 @@ One of the big pros of Python is that it's very easy to write readable code; thi
 However, it also has a big con when it comes to performance. Python is slow when it comes to processing large datasets, and can sometimes be power intensive as well as a result of it. Therefore, it's very important to be mindful of using Python at scale, as it probably isn't as suited for the purpose as a lower level language.
 ### What I learnt
 I learnt more about RegEx. Initially I was going to do string manipulation, but RegEx, while looking confusing at first, is incredibly versatile for a lot of string cases. I think I should read more into RegEx, as it's a very interesting tool to quickly match search patterns. I also learnt about pickling and its importance to binarily translate given data. It's also smaller in size due to bytes being the smallest pieces of data that can be saved. 
+## Component 2 - Guessing Game
+Program: [Code](Homework2/word_guess.py)
+### What it does
+This program will preprocess text data from an anatomy textbook and play a guessing game with the user, using the 50 most common words from the data as potential words. The user must then input the correct letters to solve the word. Correct guesses lead to an increase in points, whereas incorrect guesses lead to a decrease in points. If the player types in an "!" or they get less than 0 points, then the game terminates. 
+### How to Run
+In order to use this program, run it on the command line like so:
+`python word_guess.py anat19.txt`. Make sure you are within the `Homework2` folder.
