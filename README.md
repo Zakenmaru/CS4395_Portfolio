@@ -23,3 +23,9 @@ This program will preprocess text data from an anatomy textbook and play a guess
 ### How to Run
 In order to use this program, run it on the command line like so:
 `python word_guess.py anat19.txt`. Make sure you are within the `Homework2` folder.
+### Component 3 - WordNet
+Program: [Code](Homework3/WordNetProgram.ipynb)
+### What it does
+This program runs through the different uses of WordNet, including origins of word, finding sentiment from words, as well as collocations. It runs through different tasks to do so.
+### How to Run
+Download the notebook and run it within your notebook environment. Make sure to download the necessary resources.
