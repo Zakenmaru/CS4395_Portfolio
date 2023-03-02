@@ -1,10 +1,9 @@
 # Name: Shreya Valaboju, sxv180047
-# Course/Section: CS 4395.001
-# Program 2, Portfolio 4: Ngrams
-# Notes:
-#   - RUN PROGRAM 1 FIRST. PROGRAM 1 CREATES 6 PICKLE FILES WHICH ARE NEEDED IN THIS PROGRAM
-#   - AFTER EACH RUN, DELETE ALL THE CONTENTS FROM THE 'RESULTS.TXT' FILE, SINCE WE APPEND TO IT EACH RUN (SEE NOTES BELOW)
-#   - the probabilities are really small, but they are not 0. The classifications are correct tho, just make sure i'm doing this right
+# Name: Soham Mukherjee, sxm180113
+# Course/Section: CS 4395.001 Program 2, Portfolio 4: Ngrams Notes: - RUN PROGRAM 1
+# FIRST. PROGRAM 1 CREATES 6 PICKLE FILES WHICH ARE NEEDED IN THIS PROGRAM - AFTER EACH RUN, DELETE ALL THE CONTENTS
+# FROM THE 'RESULTS.TXT' FILE, SINCE WE APPEND TO IT EACH RUN (SEE NOTES BELOW) - the probabilities are really small,
+# but they are not 0. The classifications are correct tho, just make sure i'm doing this right
 
 
 
