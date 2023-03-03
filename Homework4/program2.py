@@ -4,14 +4,7 @@
 # FIRST. PROGRAM 1 CREATES 6 PICKLE FILES WHICH ARE NEEDED IN THIS PROGRAM - AFTER EACH RUN, DELETE ALL THE CONTENTS
 # FROM THE 'RESULTS.TXT' FILE, SINCE WE APPEND TO IT EACH RUN (SEE NOTES BELOW) - the probabilities are really small,
 # but they are not 0. The classifications are correct tho, just make sure i'm doing this right
-
-
-
-
-
-
-
-
+import os
 #  import necessary libraries
 import sys
 import pathlib
@@ -107,7 +100,6 @@ def compute_prob(eb,eu,ib,iu,fb,fu, test_data):
 
         print("Probability (French): %.10f" % p_laplace_french)
         print("\n")
-
         # 3. write to file which language has the highest probability, and that is the classification that's made
         # *** we APPEND to the file. make sure at each run, 'results.txt' is empty.
         result_file = open("result.txt", "a") # holds the classifications for each line, the 'results.'
@@ -132,6 +124,10 @@ if __name__ == '__main__':
         quit()
 
     try:
+        # Remove results file at the start
+        if os.path.exists("result.txt"):
+            os.remove("result.txt")
+
         # a. Read in pickled dictionaries.
         # open pickle file, save bigrams, unigrams for all languages to dictionaries
         eb = pickle.load(open('english_train_bigram.p', 'rb'))
