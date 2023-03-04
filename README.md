@@ -30,6 +30,8 @@ This program runs through the different uses of WordNet, including origins of wo
 ### How to Run
 Download the notebook and run it within your notebook environment. Make sure to download the necessary resources.
 ## Component 4 - Ngrams
+### Name: Shreya Valaboju, sxv180047
+### Name: Soham Mukherjee, sxm180113
 Program 1: [Code](Homework4/program1.py)
 Program 2: [Code](Homework4/program2.py)
 Narrative: [Link](Homework4/portfolio4_cs4395.001_narrative.pdf)
