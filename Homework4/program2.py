@@ -66,7 +66,6 @@ def compute_prob(eb, eu, ib, iu, fb, fu, test_data):
         # 1. create bigrams, unigrams for test line
         unigrams_test = word_tokenize(test)
         bigrams_test = list(ngrams(unigrams_test, 2))
-        print(test)  # print the test line
 
         # 2. calculate the probability using laplace smoothing for each language-  english, italian, french (refer to
         # prof's notebook)
@@ -76,16 +75,12 @@ def compute_prob(eb, eu, ib, iu, fb, fu, test_data):
             u = eu[bigram[0]] if bigram[0] in eu else 0
             p_laplace_english = p_laplace_english * ((b + 1) / (u + v))
 
-        print("Probability (English): %.10f" % p_laplace_english)
-
         ###########################################################################
         p_laplace_italian = 1
         for bigram in bigrams_test:
             b = ib[bigram] if bigram in ib else 0
             u = iu[bigram[0]] if bigram[0] in iu else 0
             p_laplace_italian = p_laplace_italian * ((b + 1) / (u + v))
-
-        print("Probability (Italian): %.10f" % p_laplace_italian)
 
         ###########################################################################
         p_laplace_french = 1
@@ -94,8 +89,6 @@ def compute_prob(eb, eu, ib, iu, fb, fu, test_data):
             u = fu[bigram[0]] if bigram[0] in fu else 0
             p_laplace_french = p_laplace_french * ((b + 1) / (u + v))
 
-        print("Probability (French): %.10f" % p_laplace_french)
-        print("\n")
         # 3. write to file which language has the highest probability, and that is the classification that's made
         # *** we APPEND to the file. make sure at each run, 'results.txt' is empty.
         result_file = open("result.txt", "a")  # holds the classifications for each line, the 'results.'
