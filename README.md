@@ -29,3 +29,25 @@ Program: [Code](Homework3/WordNetNotebook.pdf)
 This program runs through the different uses of WordNet, including origins of word, finding sentiment from words, as well as collocations. It runs through different tasks to do so.
 ### How to Run
 Download the notebook and run it within your notebook environment. Make sure to download the necessary resources.
+## Component 4 - Ngrams
+Program 1: [Code](Homework4/program1.py)
+Program 2: [Code](Homework4/program2.py)
+Narrative:
+### What it does
+This program will train given input data in English, French, and Italian and try to identify sentences using testing data. The outputs will be the accuracy (number of sentences correctly classified), as well as the line numbers which were incorrect. As of writing this, the accuracy should be ~95%. 
+
+### How to Run
+#### Program 1
+Given appropriate training data, Program 1 will make unigrams/bigrams out of the data and store them in pickle files. The following files are available:
+- **data/LangId.train.English**
+- **data/LangId.train.French**
+- **data/LangId.train.Italian**
+
+In order to run the program, run it as such: 
+
+`python program1.py data/LangId.train.<English/French/Italian>`
+
+#### Program 2
+After the unigrams and bigrams are created, it's time to test them using sample data. Run the following command: 
+
+`python program2.py data/LandId.test data/LandId.sol`
