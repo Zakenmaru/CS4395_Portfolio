@@ -45,7 +45,7 @@ Given appropriate training data, Program 1 will make unigrams/bigrams out of the
 
 In order to run the program, run it as such: 
 
-`python program1.py data/LangId.train.<English/French/Italian>`
+`python program1.py  python program1.py data/LangID.train.English data/LangID.train.French data/LangID.train.Italian`
 
 #### Program 2
 After the unigrams and bigrams are created, it's time to test them using sample data. Run the following command: 
