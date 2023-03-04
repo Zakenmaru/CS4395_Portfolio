@@ -32,7 +32,7 @@ Download the notebook and run it within your notebook environment. Make sure to 
 ## Component 4 - Ngrams
 Program 1: [Code](Homework4/program1.py)
 Program 2: [Code](Homework4/program2.py)
-Narrative:
+Narrative: [Link](Homework4/portfolio4_cs4395.001_narrative.pdf)
 ### What it does
 This program will train given input data in English, French, and Italian and try to identify sentences using testing data. The outputs will be the accuracy (number of sentences correctly classified), as well as the line numbers which were incorrect. As of writing this, the accuracy should be ~95%. 
 
