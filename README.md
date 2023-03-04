@@ -53,3 +53,5 @@ In order to run the program, run it as such:
 After the unigrams and bigrams are created, it's time to test them using sample data. Run the following command: 
 
 `python program2.py data/LandId.test data/LandId.sol`
+## Component 5 - Sentence Parsing
+Document: [Link](sxm180113_sentenceparse.pdf)
