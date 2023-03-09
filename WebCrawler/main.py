@@ -60,6 +60,7 @@ def create_tfidf(tf, idf):
     return tf_idf
 
 
+# Manually determine the top 10 terms from step 4, based on your domain knowledge.
 def get_top_ten(top_ten_terms):
     # sort to get top ten
     top_ten_terms = sorted(top_ten_terms, key=lambda x: x[1], reverse=True)[:10]
