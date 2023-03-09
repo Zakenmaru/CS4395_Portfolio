@@ -27,7 +27,7 @@ nltk.download('punkt')
 # Build a searchable knowledge base of facts that a chatbot (to be developed later) can
 # share related to the 10 terms. The “knowledge base” can be as simple as a Python dict
 # which you can pickle. More points for something more sophisticated like sql.
-def knowledgeBase():
+def knowledgeBase(terms):
 
     return 0
 
@@ -67,6 +67,7 @@ def get_top_ten(top_ten_terms):
     print("\nTop 10 terms:")
     for i in range(len(top_ten_terms)):
         print(str(i + 1) + ": " + top_ten_terms[i][0])
+    knowledgeBase(top_ten_terms)
 
 
 def tfidf(sentence_files):
