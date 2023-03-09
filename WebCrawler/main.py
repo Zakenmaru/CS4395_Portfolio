@@ -19,26 +19,24 @@ import nltk
 from nltk import word_tokenize
 from nltk.tokenize import sent_tokenize
 from nltk.corpus import stopwords
+
 stopwords = stopwords.words('english')
 nltk.download('punkt')
 
 
-#Build a searchable knowledge base of facts that a chatbot (to be developed later) can
-#share related to the 10 terms. The “knowledge base” can be as simple as a Python dict
-#which you can pickle. More points for something more sophisticated like sql.
+# Build a searchable knowledge base of facts that a chatbot (to be developed later) can
+# share related to the 10 terms. The “knowledge base” can be as simple as a Python dict
+# which you can pickle. More points for something more sophisticated like sql.
 def knowledgeBase():
+
     return 0
-
-
-
 
 
 # calculates terrm frequencies of all documents
 def tf(text):
-
-    tf_dict={}
+    tf_dict = {}
     tokens = word_tokenize(text)
-    tokens = [w for w in tokens if w.isalpha() and w not in stopwords]  #extract alpha and non-stopwords only
+    tokens = [w for w in tokens if w.isalpha() and w not in stopwords]  # extract alpha and non-stopwords only
 
     # get term frequencies in a more Pythonic way
     token_set = set(tokens)
@@ -51,20 +49,27 @@ def tf(text):
     return tf_dict
 
 
-#Write a function to extract at least 25 important terms from the pages using an
-#importance measure such as term frequency, or tf-idf.
-#First, it’s a good idea to lowercase everything, remove stopwords and punctuation. Print the top 25-40 terms.
+# Write a function to extract at least 25 important terms from the pages using an
+# importance measure such as term frequency, or tf-idf.
+# First, it’s a good idea to lowercase everything, remove stopwords and punctuation. Print the top 25-40 terms.
 # create tf-idf dictionaries for each file
-def create_tfidf(tf,idf):
+def create_tfidf(tf, idf):
     tf_idf = {}
     for t in tf.keys():
         tf_idf[t] = tf[t] * idf[t]
     return tf_idf
 
 
-def tfidf(sentence_files):
+def get_top_ten(top_ten_terms):
+    # sort to get top ten
+    top_ten_terms = sorted(top_ten_terms, key=lambda x: x[1], reverse=True)[:10]
+    print("\nTop 10 terms:")
+    for i in range(len(top_ten_terms)):
+        print(str(i + 1) + ": " + top_ten_terms[i][0])
 
-    vocab_per_url =[]
+
+def tfidf(sentence_files):
+    vocab_per_url = []
     tf_dicts_all = []
     vocab = set()
 
@@ -76,39 +81,38 @@ def tfidf(sentence_files):
         text = re.sub(r'[^\w\s]', '', text)
 
         # get tf (term frequencies) dictionaries for each file
-        tf_dict= tf(text)
+        tf_dict = tf(text)
         vocab_per_url.append(tf_dict.keys())
         tf_dicts_all.append(tf_dict)
 
         # add to vocab
         vocab = vocab.union(set(tf_dict.keys()))
 
-
     # get idf
-    idf_dict={}
+    idf_dict = {}
     for term in vocab:
         temp = ['x' for voc in vocab_per_url if term in voc]
         idf_dict[term] = math.log((1 + len(sentence_files)) / (1 + len(temp)))
 
     # get tf-idf dictionary for each document and print top 25 terms from each
     tf_idf = {}
-    url_num=0
+    url_num = 0
+    top_ten_terms = list()
+
     for termf in tf_dicts_all:
-        tfd = create_tfidf(termf,idf_dict)
+        tfd = create_tfidf(termf, idf_dict)
         doc_term_weights = sorted(tfd.items(), key=lambda x: x[1], reverse=True)
-        print("\nPlayer "+ str(url_num)+ " top 25 terms: ", doc_term_weights[:25])
-        url_num+=1
+        print("\nPlayer " + str(url_num) + " top 25 terms: ", doc_term_weights[:25])
+        top_ten_terms.extend(doc_term_weights)
+        url_num += 1
 
+    get_top_ten(top_ten_terms)
 
-
-
-
-#Write a function to clean up the text from each file. You might need to delete newlines
-#and tabs first. Extract sentences with NLTK’s sentence tokenizer. Write the sentences for
+# Write a function to clean up the text from each file. You might need to delete newlines
+# and tabs first. Extract sentences with NLTK’s sentence tokenizer. Write the sentences for
 # each file to a new file. That is, if you have 15 files in, you have 15 files out.
 def clean(files_arr):
-
-    sentences_files=[]
+    sentences_files = []
 
     for f in files_arr:
         current_file = open(f, "r", encoding="utf-8")  # open file to read
@@ -119,16 +123,15 @@ def clean(files_arr):
         text_in = re.sub('\s+', ' ', text_in)
 
         # lowercase, everything between brackets, parenthesis
-        text_in = re.sub("\(.*?\)","",text_in)
+        text_in = re.sub("\(.*?\)", "", text_in)
         text_in = re.sub("\[.*?\]", "", text_in)
 
-
         # extract sentences using nltk's tokenizer, write sentences to a new file
-        sent_arr= sent_tokenize(text_in)
-        fname= "cleaned_"+f
-        cleaned_file = open(fname,'a', encoding="utf-8")
+        sent_arr = sent_tokenize(text_in)
+        fname = "cleaned_" + f
+        cleaned_file = open(fname, 'a', encoding="utf-8")
         for sentence in sent_arr:
-            cleaned_file.write(sentence +"\n")
+            cleaned_file.write(sentence + "\n")
         sentences_files.append(fname)
         cleaned_file.close()
 
@@ -137,38 +140,37 @@ def clean(files_arr):
 
 
 def accessPage(base_url):
-
-    urls=[]
-    files=[]
+    urls = []
+    files = []
 
     base_page = requests.get(base_url)
     base_soup = BeautifulSoup(base_page.content, 'html.parser')
 
-    #for p in base_soup.select('p'):
+    # for p in base_soup.select('p'):
     #    print(p.get_text())
 
-    #tables = base_soup.find_all('table')
-    #for child in base_soup.find_all('table')[0].children:
+    # tables = base_soup.find_all('table')
+    # for child in base_soup.find_all('table')[0].children:
     #    for td in child:
     #        print(td.text)
 
     # get players links (15)
-    name_column_number=0
+    name_column_number = 0
     table = base_soup.find('table', class_='sortable')  # the table with information about each player
-    #table = base_soup.find_all('table')[0] - for link 7
+    # table = base_soup.find_all('table')[0] - for link 7
     for row in table.tbody.find_all('tr'):  # iterate through each row of the table
         name_column_number = 0
-        columns = row.find_all('td') # get the columns of the table
+        columns = row.find_all('td')  # get the columns of the table
         for td in columns:
-            if td.a and name_column_number ==2: # the second column holds the name of each player hyperlinked to their own wiki pages
+            if td.a and name_column_number == 2:  # the second column holds the name of each player hyperlinked to their own wiki pages
                 urls.append(urljoin(base_url, td.a.get('href')))
-                #print(urljoin(base_url, td.a.get('href')))
-            name_column_number+=1
+                # print(urljoin(base_url, td.a.get('href')))
+            name_column_number += 1
 
     # get external links (5) from reference list
-    #x=0
-    #reference_data = base_soup.findAll('div', attrs={'class': 'reflist'})
-    #for div in reference_data:
+    # x=0
+    # reference_data = base_soup.findAll('div', attrs={'class': 'reflist'})
+    # for div in reference_data:
     #    links = div.findAll('a')
     #    for a in links:
     #        if x == 10:
@@ -179,20 +181,21 @@ def accessPage(base_url):
     #            print(urljoin(base_url, link_str))
     #            x+=1
 
-
     # Write a function to loop through your URLs and scrape all text off each page. Store each page’s text in its own file
     for i in range(len(urls)):
         # create new soup objects and request for each link we scrape from
         page = requests.get(urls[i])
         soup = BeautifulSoup(page.content, 'html.parser')
-        file_name = 'url'+str(i)+'.txt' # name of the file to be created
+        file_name = 'url' + str(i) + '.txt'  # name of the file to be created
         files.append(file_name)
         for p in soup.select('p'):
-            url_file = open(file_name, "a", encoding="utf-8")  # file with the predicted languages for each line in the test file
+            url_file = open(file_name, "a",
+                            encoding="utf-8")  # file with the predicted languages for each line in the test file
             url_file.write(p.get_text() + '\n')
-            #print(p.get_text())
+            # print(p.get_text())
 
     clean(files)
+
 
 if __name__ == '__main__':
     # https://www.mavs.com/team/roster/
@@ -214,5 +217,3 @@ if __name__ == '__main__':
             os.remove(file_name2)
 
     accessPage(url)
-
-
