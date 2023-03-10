@@ -75,6 +75,9 @@ def display_info(player_url):
     # Create an empty dictionary to store the statistics
     stats = {}
 
+    player_name = player_url.split("/wiki/")[1]
+    stats['name'] = player_name.replace("_", " ")
+
     # Loop through all rows in the infobox
     for row in infobox.find_all('tr'):
         # Find the header cell and data cell for each row
@@ -86,20 +89,27 @@ def display_info(player_url):
             # Use the header text as the key and the data text as the value
             stats[header.get_text().strip()] = data.get_text().strip()
 
+    # remove any special characters in stats
+    for key, value in stats.items():
+        stats[key] = value.replace('\xa0', ' ').replace('\u200b', '').replace('\ufeff','').replace('–','-').replace('\n', '~')
     # Print the dictionary of statistics
     print(stats)
+    return stats
 
 
 def knowledge_base(terms):
+    players_dict = {}
     players = get_players()
     url_starter = "https://en.wikipedia.org/wiki/"
     for term in terms:
         for player in players:
             if term.lower() in player.lower():
                 player_url = url_starter + player
-                display_info(player_url)
-
-    return
+                player_dict = display_info(player_url)
+                players_dict[player] = player_dict
+    with open('players.p', 'wb') as f:
+        # Dump the dictionary into the file using pickle.dump()
+        pickle.dump(players_dict, f)
 
 
 # calculates terrm frequencies of all documents
