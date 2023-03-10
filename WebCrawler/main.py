@@ -104,6 +104,7 @@ def knowledge_base(terms):
     for term in terms:
         for player in players:
             if term.lower() in player.lower():
+                # given an existing player, get the url and begin parsing info
                 player_url = url_starter + player
                 player_dict = display_info(player_url)
                 players_dict[player] = player_dict
