@@ -24,12 +24,82 @@ stopwords = stopwords.words('english')
 nltk.download('punkt')
 
 
+def get_players():
+    # Send a request to the URL and create a BeautifulSoup object
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, 'html.parser')
+
+    # Find the table containing the roster information
+    roster_table = soup.find("table", {"class": "toccolours"})
+
+    # Find all the rows in the table
+    rows = roster_table.find_all("tr")
+
+    players = []
+
+    # Loop over the rows and print out their contents
+    for row in rows[1:]:
+        # Check if the row contains the table header, skip if it does
+        if row.find("th"):
+            continue
+        # Get the third column, which contains player name
+        raw_name = row.find_all("td")[2].get_text().strip()
+        # Replace non-breaking space character with regular space
+        raw_name = raw_name.replace('\xa0', '_')
+        # remove (TW) flag
+        raw_name = raw_name.replace("(TW)", "")
+        # Modify the name
+        player = "_".join(raw_name.split(",")[::-1]).strip()
+        if player == "McKinley IV__Wright":
+            player = "Luka_Doncic"
+        if player == "Jr._ Tim_Hardaway":
+            player = "Davis_Bertans"
+        players.append(player)
+
+    return players
+
+
 # Build a searchable knowledge base of facts that a chatbot (to be developed later) can
 # share related to the 10 terms. The “knowledge base” can be as simple as a Python dict
 # which you can pickle. More points for something more sophisticated like sql.
-def knowledgeBase(terms):
+def display_info(player_url):
+    # Send a GET request to the URL and store the response
+    response = requests.get(player_url)
 
-    return 0
+    # Parse the HTML content of the response using BeautifulSoup
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Find the infobox on the page
+    infobox = soup.find('table', {'class': 'infobox vcard'})
+
+    # Create an empty dictionary to store the statistics
+    stats = {}
+
+    # Loop through all rows in the infobox
+    for row in infobox.find_all('tr'):
+        # Find the header cell and data cell for each row
+        header = row.find('th')
+        data = row.find('td')
+
+        # If both the header and data cells exist, add them to the dictionary
+        if header and data:
+            # Use the header text as the key and the data text as the value
+            stats[header.get_text().strip()] = data.get_text().strip()
+
+    # Print the dictionary of statistics
+    print(stats)
+
+
+def knowledge_base(terms):
+    players = get_players()
+    url_starter = "https://en.wikipedia.org/wiki/"
+    for term in terms:
+        for player in players:
+            if term.lower() in player.lower():
+                player_url = url_starter + player
+                display_info(player_url)
+
+    return
 
 
 # calculates terrm frequencies of all documents
@@ -62,12 +132,21 @@ def create_tfidf(tf, idf):
 
 # Manually determine the top 10 terms from step 4, based on your domain knowledge.
 def get_top_ten(top_ten_terms):
-    # sort to get top ten
+    # sort to get top ten, replace temporary players with popular ones
     top_ten_terms = sorted(top_ten_terms, key=lambda x: x[1], reverse=True)[:10]
+    for i in range(len(top_ten_terms)):
+        if top_ten_terms[i][0] == 'lawson':
+            top_ten_terms[i] = ('doncic', 0.9)
+        if top_ten_terms[i][0] == 'wright':
+            top_ten_terms[i] = ('irving', 0.89)
+        if top_ten_terms[i][0] == 'bertāns':
+            top_ten_terms[i] = ('bertans', 0.88)
     print("\nTop 10 terms:")
+    top_ten = []
     for i in range(len(top_ten_terms)):
         print(str(i + 1) + ": " + top_ten_terms[i][0])
-    knowledgeBase(top_ten_terms)
+        top_ten.append(top_ten_terms[i][0])
+    knowledge_base(top_ten)
 
 
 def tfidf(sentence_files):
@@ -109,6 +188,7 @@ def tfidf(sentence_files):
         url_num += 1
 
     get_top_ten(top_ten_terms)
+
 
 # Write a function to clean up the text from each file. You might need to delete newlines
 # and tabs first. Extract sentences with NLTK’s sentence tokenizer. Write the sentences for
