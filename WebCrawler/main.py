@@ -1,9 +1,6 @@
-# Names: Shreya Valaboju, Soham Mukherjee
-# Course/Section: CS 4395.001
-# Portfolio 6: Web Crawler
-# Description: This program scrapes information from the Dallas Mavericks Wikipedia page. It extracts sentences and important
-#   terms using tf-idf. We manually determined 10 terms to use for a chat (to be developed later)
-import json
+# Names: Shreya Valaboju, Soham Mukherjee Course/Section: CS 4395.001 Portfolio 6: Web Crawler Description: This
+# program scrapes information from the Dallas Mavericks Wikipedia page. It extracts sentences and important terms
+# using tf-idf. We manually determined 10 terms to use for a chat (to be developed later)
 
 # import libraries
 from bs4 import BeautifulSoup
@@ -11,13 +8,13 @@ from urllib.parse import urljoin
 import requests
 import os
 import re
-import sys
 import pickle
 import math
 import nltk
 from nltk import word_tokenize
 from nltk.tokenize import sent_tokenize
 from nltk.corpus import stopwords
+from pprint import pprint
 
 stopwords = stopwords.words('english')
 nltk.download('punkt')
@@ -87,16 +84,24 @@ def display_info(player_url):
 
     # remove any special characters in stats
     for key, value in stats.items():
-        old_key = key
-        stats[key] = value.replace('\xa0', ' ').replace('\u200b', '').replace('\ufeff','').replace('–','-').replace('\n', '~').replace('\u2192', '').replace('\u00fc', 'u')
+        stats[key] = value.replace('\xa0', ' ').replace('\u200b', '').replace('\ufeff', '').replace('–', '-').replace(
+            '\n', '~').replace('\u2192', '').replace('\u00fc', 'u')
     new_stats = dict()
     for k in stats.keys():
         old_key = k
-        new_key = old_key.replace('\u2013', '-').replace('\u00a0','')
+        new_key = old_key.replace('\u2013', '-').replace('\u00a0', '')
         new_stats[new_key] = stats[old_key]
     # Print the dictionary of statistics
     print(new_stats)
     return new_stats
+
+
+# Unpickles the players' info and prints it accordingly
+def print_players(fp_name):
+    players_pickle = open(fp_name, "rb")
+    players_info = pickle.load(players_pickle)
+    pprint(players_info)
+
 
 # This function builds a searchable knowledge base of facts that a chatbot (to be developed later) can
 # share related to the 10 terms manually picked. For our program, the knowledge base is a python dictionary
@@ -114,21 +119,25 @@ def knowledge_base(terms):
                 player_url = url_starter + player
                 player_dict = display_info(player_url)
                 players_dict[player] = player_dict
-    with open('players.json', 'w') as f:
-        # Dump the dictionary into the file using pickle.dump()
-        json.dump(players_dict, f, indent=4)
+    with open('players.p', 'wb') as f:
+        # Dump the binary dictionary into the file.
+        pickle.dump(players_dict, f)
+
+    fp_name = 'players.p'
+    print_players(fp_name)
 
 
 # Manually determined the top 10 terms (players) from step 4, based on the domain knowledge
 def get_top_ten(top_ten_terms):
     # sort to get top ten, replace temporary players with popular ones
-    #top_ten_terms = sorted(top_ten_terms, key=lambda x: x[1], reverse=True)[:10]
-    #top_ten_terms = top_ten_terms[:10]
+    # top_ten_terms = sorted(top_ten_terms, key=lambda x: x[1], reverse=True)[:10]
+    # top_ten_terms = top_ten_terms[:10]
 
-    top_ten_terms_list = ['doncic','irving','wood', 'bertans','powell','bullock','kleber','ntilikina','mcgee', 'pinson']
+    top_ten_terms_list = ['doncic', 'irving', 'wood', 'bertans', 'powell', 'bullock', 'kleber', 'ntilikina', 'mcgee',
+                          'pinson']
 
-    #for i in range(len(top_ten_terms)):
-   #     if top_ten_terms[i][0] == 'lawson':
+    # for i in range(len(top_ten_terms)):
+    #     if top_ten_terms[i][0] == 'lawson':
     #        top_ten_terms[i] = ('doncic', 0.9)
     #    if top_ten_terms[i][0] == 'wright':
     #        top_ten_terms[i] = ('irving', 0.89)
@@ -138,14 +147,13 @@ def get_top_ten(top_ten_terms):
     print("\nTop 10 terms:")
     top_ten = []
     for i in range(len(top_ten_terms_list)):
-        #print(str(i + 1) + ": " + top_ten_terms[i][0])
-        #top_ten.append(top_ten_terms[i][0])
+        # print(str(i + 1) + ": " + top_ten_terms[i][0])
+        # top_ten.append(top_ten_terms[i][0])
         print(str(i + 1) + ": " + top_ten_terms_list[i])
         top_ten.append(top_ten_terms_list[i])
 
     print("\n")
     knowledge_base(top_ten)
-
 
 
 # calculates term frequencies of all documents
@@ -173,7 +181,8 @@ def create_tfidf(tf, idf):
     return tf_idf
 
 
-# the function extracts at least 25 important terms from the pages using an importance measure such as term frequency, or tf-idf.
+# the function extracts at least 25 important terms from the pages using an importance measure such as term
+# frequency, or tf-idf.
 def tfidf(sentence_files):
     vocab_per_url = []
     tf_dicts_all = []
@@ -207,18 +216,17 @@ def tfidf(sentence_files):
     for termf in tf_dicts_all:
         tfd = create_tfidf(termf, idf_dict)
         doc_term_weights = sorted(tfd.items(), key=lambda x: x[1], reverse=True)
-        #print("\nPlayer " + str(url_num) + " top 25 terms: ", doc_term_weights[:25])
+        # print("\nPlayer " + str(url_num) + " top 25 terms: ", doc_term_weights[:25])
         print(sentence_files[url_num] + " top 25 terms: ", doc_term_weights[:25])
         top_ten_terms.extend(doc_term_weights)
         url_num += 1
 
-    get_top_ten(top_ten_terms) # call to get top 10 terms
+    get_top_ten(top_ten_terms)  # call to get top 10 terms
 
 
 # the function to cleans up the text from each file. we deleted newlines and tabs.
 #   and extracted sentences with NLTK’s sentence tokenizer and wrote those sentences to a new file
 def clean(files_arr):
-
     sentences_files = []
 
     # iterate through each file, 'url_.txt'
@@ -247,16 +255,15 @@ def clean(files_arr):
     tfidf(sentences_files)
 
 
-# this function 'crawls' through the Dallas Mavericks Wiki page and uses beautifulsoup to scrape text and urls within the domain.
+# this function 'crawls' through the Dallas Mavericks Wiki page and uses beautifulsoup to scrape text and urls within
+# the domain.
 def webcrawl(base_url):
-
-    urls = []   # holds a list of urls found within and outside the domain
+    urls = []  # holds a list of urls found within and outside the domain
     files = []  # stores the files created for each link
 
     # base page and soup objects created for the base domain, the dallas mavs wiki page
     base_page = requests.get(base_url)
     base_soup = BeautifulSoup(base_page.content, 'html.parser')
-
 
     # get players links
     name_column_number = 0
@@ -266,9 +273,9 @@ def webcrawl(base_url):
         name_column_number = 0
         columns = row.find_all('td')  # get the columns of the table
         for td in columns:
-            if td.a and name_column_number == 2:  # the second column holds the name of each player hyperlinked to their own wiki pages
+            if td.a and name_column_number == 2:  # the second column holds the name of each player hyperlinked to
+                # their own wiki pages
                 urls.append(urljoin(base_url, td.a.get('href')))
-                # print(urljoin(base_url, td.a.get('href')))
             name_column_number += 1
 
     # get external links (5) from reference list of the domain
@@ -278,12 +285,12 @@ def webcrawl(base_url):
         links = div.findAll('a')
         for a in links:
             if num_external_links == 5:
-                 break
-            link_str = urljoin(base_url, a.get('href')) # link string
+                break
+            link_str = urljoin(base_url, a.get('href'))  # link string
             # exclude links that are within the same domain and are not scrapable, such as pdfs, jpgs, etc.
             if 'wiki' not in link_str and 'pdf' not in link_str and 'jpg' not in link_str and 'mavs.com' not in link_str and 'web.archive' in link_str:
                 urls.append(urljoin(base_url, link_str))
-                #print(urljoin(base_url, link_str))
+                # print(urljoin(base_url, link_str))
                 num_external_links += 1
 
     # loop through the URLs and scrape all text off each page. Store each page’s text in its own file
@@ -299,11 +306,11 @@ def webcrawl(base_url):
         file_name = 'url' + str(i) + '.txt'  # name of the file to be created
         has_text = False
         for p in soup.select('p'):
-            url_file = open(file_name, "a",encoding="utf-8")  # append the scraped text to the newly created file
+            url_file = open(file_name, "a", encoding="utf-8")  # append the scraped text to the newly created file
             url_file.write(p.get_text() + '\n')
-            has_text=True
+            has_text = True
             # print(p.get_text())
-        if has_text == True:
+        if has_text:
             files.append(file_name)
 
     clean(files)
@@ -322,4 +329,4 @@ if __name__ == '__main__':
         if os.path.exists(file_name2):
             os.remove(file_name2)
 
-    webcrawl(url) # begin web crawl function
+    webcrawl(url)  # begin web crawl function
