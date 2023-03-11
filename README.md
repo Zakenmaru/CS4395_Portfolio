@@ -55,3 +55,9 @@ After the unigrams and bigrams are created, it's time to test them using sample 
 `python program2.py data/LandId.test data/LandId.sol`
 ## Component 5 - Sentence Parsing
 Document: [Link](sxm180113_sentenceparse.pdf)
+
+## Web Crawler
+Report: [Link](WebCrawler/web_crawler_report.pdf)
+Program: [Code](WebCrawler/main.py)
+### How to Run
+Run the file as-is. It'll create the knowledge base of players and store them within a Pickle file.
