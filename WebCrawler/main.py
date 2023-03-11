@@ -1,6 +1,9 @@
-# Names: Shreya Valaboju, Soham Mukherjee Course/Section: CS 4395.001 Portfolio 6: Web Crawler Description: This
-# program scrapes information from the Dallas Mavericks Wikipedia page. It extracts sentences and important terms
-# using tf-idf. We manually determined 10 terms to use for a chat (to be developed later)
+# Names: Shreya Valaboju, Soham Mukherjee
+# Course/Section: CS 4395.001
+# Portfolio 6: Web Crawler
+# Description: This program scrapes information from the Dallas Mavericks Wikipedia page. It extracts sentences and important terms
+#   using tf-idf. We manually determined 10 terms to use for a chat (to be developed later). We developed a primlimary knowledge base
+#   to be used for the chatbot as well, which is printed to the console.
 
 # import libraries
 from bs4 import BeautifulSoup
@@ -20,6 +23,7 @@ stopwords = stopwords.words('english')
 nltk.download('punkt')
 
 
+# this function gets the players name from the pickled dictionary
 def get_players():
     # Send a request to the URL and create a BeautifulSoup object
     page = requests.get(url)
@@ -55,6 +59,7 @@ def get_players():
     return players
 
 
+# this function scrapes and displays details about the players from the url to use in the knowledge base
 def display_info(player_url):
     # Send a GET request to the URL and store the response
     response = requests.get(player_url)
@@ -156,7 +161,7 @@ def get_top_ten(top_ten_terms):
     knowledge_base(top_ten)
 
 
-# calculates term frequencies of all documents
+# this function calculates term frequencies of all documents
 def tf(text):
     tf_dict = {}
     tokens = word_tokenize(text)
@@ -181,8 +186,7 @@ def create_tfidf(tf, idf):
     return tf_idf
 
 
-# the function extracts at least 25 important terms from the pages using an importance measure such as term
-# frequency, or tf-idf.
+# the function extracts at least 25 important terms from the pages using an importance measure such as term frequency, or tf-idf.
 def tfidf(sentence_files):
     vocab_per_url = []
     tf_dicts_all = []
