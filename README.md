@@ -61,3 +61,6 @@ Report: [Link](WebCrawler/web_crawler_report.pdf)
 Program: [Code](WebCrawler/main.py)
 ### How to Run
 Run the file as-is. It'll create the knowledge base of players and store them within a Pickle file.
+
+## Text Classification
+PDF: [Code](TextClassification/sxm180113_text_classification.pdf)
