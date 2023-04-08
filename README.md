@@ -64,3 +64,6 @@ Run the file as-is. It'll create the knowledge base of players and store them wi
 
 ## Text Classification
 PDF: [Code](TextClassification/sxm180113_text_classification.pdf)
+
+## ACL Paper
+PDF: [Paper](sxv180047_sxm180113_summary_acl_paper_cs4395.001.pdf)
