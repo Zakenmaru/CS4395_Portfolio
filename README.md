@@ -67,3 +67,7 @@ PDF: [Code](TextClassification/sxm180113_text_classification.pdf)
 
 ## ACL Paper
 PDF: [Paper](sxv180047_sxm180113_summary_acl_paper_cs4395.001.pdf)
+
+## Text Classification 2
+PDF: [Code](TextClassification/sxm180113_text_classification_2.pdf)
+
