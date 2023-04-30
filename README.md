@@ -74,3 +74,25 @@ Code: [NBA-Chatbot](NBA-Chatbot/chatbot.py)
 ## Text Classification 2
 PDF: [Code](TextClassification/sxm180113_text_classification_2.pdf)
 
+# Summary
+
+### NLP Skills
+Throughout the course, I refined my skills in preprocessing, as well as learning new ones in making NLP models. Whether it was techniques like TF-IDF, using RNNs, or more, I thoroughly enjoyed my time in this class learning more about the joy of Natural Language Processing. The projects were very, very fun, and forced me to think more about _why_ I was doing the project rather than _what_. I also learnt a lot more about the Mavericks.
+
+### Why NLP?
+I honestly chose this class at first on recommendation of a friend, without really knowing what NLP was about. Honestly, I thought it was identifying handwritten numbers (before I realized that was Computer Vision). I quickly grew to enjoy it as it taught me the joy of linguistics on both a semantic and technical level. It made a lot of sense despite being a confusing subject from the outside. I got to learn more not only about the technology and libraries behind it, but also human interactions as a whole. I can see why it's called Human Language Technologies instead of Natural Language Processing - it is quite literally, the study of how humans interface their language to technology.
+
+### Future Personal Project
+I like writing a book series in my freetime, but I also like programming. At the intersection of these two, I want to create a comprehensive writing Discord bot which readers and users alike can query for information about the book, such as characters, settings, plot, etc. 
+
+Currently, in my writing Discord, I have an MVP of the bot which users can query about characters and general information using preset Discord commands. I want to expand this using the techniques I learnt in class to make a fully-functioning, NLP-based version of the bot. Ideally, it will dynamically respond to users' queries without needing to parse a specific command. 
+
+### Keeping Up With The NLPians
+With the advent of big data, machine learning, artificial intelligence, digital manufacturing, big data analysis, quantum communication and internet of things, Natural Language Processing is a hotter topic more than ever. I already use Medium and TechCrunch to keep up with 
+
+### Future Opportunities
+I would like to get opportunities, especially in this uncertain economic climate. I'm primarily seeking software engineering roles, and I have a fundamental understanding of Natural Language Processing due to having taken coursework on the subject. I would like to work on the systems that handle such large batches of data and processing, as I feel it would be really fun.
+
+### Conclusion to the Conclusion
+All in all, I really enjoyed my time with this class, and I look forward to taking the skills, both hard and soft, to the next step!
+
